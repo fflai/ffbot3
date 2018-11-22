@@ -24,6 +24,12 @@ namespace FFBot2
 
         public static void Main(string[] args)
         {
+            if (!Directory.Exists("quotes"))
+            {
+                Console.WriteLine("Warning: Creating quotes directory.");
+                Directory.CreateDirectory("quotes");
+            }
+
             if (args.Length == 0)
             {
                 Console.WriteLine("Please pass the channelids as args.");
