@@ -25,7 +25,7 @@ namespace FFBot2
 
         public static async Task<Story> CrawlStory(string id)
         {
-            string url = "https://www.fanfiction.net/s/" + id + "/1/";
+            string url = MainClass.Config.FanFictionUrl + "s/" + id + "/1/";
             string profileHtml;
             using (var wc = new WebClient())
             {

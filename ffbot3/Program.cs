@@ -16,7 +16,7 @@ namespace FFBot2
         static RecCounter RecCounter = new RecCounter("recs.json", "reclog.csv");
 
         static Discord.IDiscordClient DiscordClient;
-        static Config Config { get; set; }
+        public static Config Config { get; set; }
 
         static ConcurrentDictionary<ulong, Discord.IUserMessage> SentMessages = new ConcurrentDictionary<ulong, Discord.IUserMessage>();
 

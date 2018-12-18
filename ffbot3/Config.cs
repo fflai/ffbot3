@@ -7,6 +7,7 @@ namespace FFBot2
     class Config
     {
         public ServerConfig[] Servers { get; set; }
+        public string FanFictionUrl { get; set; } = "https://www.fanfiction.net/";
     }
 
     class ServerConfig
