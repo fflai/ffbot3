@@ -90,7 +90,11 @@ namespace FFBot2
             search = search.ToLowerInvariant();
             var quotes = LoadQuotes(server);
 
-            quotes = quotes.Where(a => a.ToLowerInvariant().Contains(search)).ToList();
+            var words = search.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            foreach (var word in words)
+            {
+                quotes = quotes.Where(a => a.ToLowerInvariant().Contains(word)).ToList();
+            }
 
             if (quotes.Count == 0)
                 return -1;
