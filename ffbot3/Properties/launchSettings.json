@@ -1,8 +1,7 @@
 {
   "profiles": {
     "ffbot3": {
-      "commandName": "Project",
-      "commandLineArgs": "321283662392066049"
+      "commandName": "Project"
     }
   }
 }
