@@ -49,7 +49,7 @@ namespace FFBot2
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(targetUrl);
             request.CookieContainer = container;
-            request.AllowAutoRedirect = false;
+            request.AllowAutoRedirect = true;
             return request;
         }
 
