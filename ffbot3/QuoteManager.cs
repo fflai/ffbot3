@@ -53,6 +53,12 @@ namespace FFBot2
             await channel.SendMessageAsync(":hash: Quote " + num + " added!");
         }
 
+        public async Task DumpQuotes(IMessageChannel channel)
+        {
+            SocketGuild server = ((SocketGuildChannel)channel).Guild;
+            string fileName = "quotes/" + server.Id + ".txt";
+            await channel.SendFileAsync(fileName, "There you go!");
+        }
 
 
         private async Task SendQuote(int number, string quote, IMessageChannel channel)
