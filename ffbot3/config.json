@@ -1,0 +1,11 @@
+﻿{
+  "Servers": [
+    {
+      "Name": "flai-test",
+      "AllowQuotes": false,
+      "ChannelIds": [
+        321283662392066049
+      ]
+    }
+  ]
+}

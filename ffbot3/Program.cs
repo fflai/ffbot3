@@ -16,7 +16,7 @@ namespace FFBot2
         static RecCounter RecCounter = new RecCounter("recs.json", "reclog.csv");
 
         static Discord.IDiscordClient DiscordClient;
-        static ulong[] ChannelIDs;
+        static Config Config { get; set; }
 
         static ConcurrentDictionary<ulong, Discord.IUserMessage> SentMessages = new ConcurrentDictionary<ulong, Discord.IUserMessage>();
 
@@ -30,13 +30,8 @@ namespace FFBot2
                 Directory.CreateDirectory("quotes");
             }
 
-            if (args.Length == 0)
-            {
-                Console.WriteLine("Please pass the channelids as args.");
-                return;
-            }
-
-            ChannelIDs = args.Where(a => !string.IsNullOrWhiteSpace(a)).Select(a => ulong.Parse(a)).ToArray();
+            var configStr = File.ReadAllText(args.Length > 0 ? args[0] : "config.json");
+            Config = Newtonsoft.Json.JsonConvert.DeserializeObject<Config>(configStr);
 
             var discord = new DiscordSocketClient();
             DiscordClient = discord;
@@ -67,10 +62,12 @@ namespace FFBot2
             if (message.Author.Id == DiscordClient.CurrentUser.Id)
                 return;
 
-            if (!ChannelIDs.Contains(message.Channel.Id))
+            var server = Config.Servers.SingleOrDefault(a => a.ChannelIds.Contains(message.Channel.Id));
+
+            if (server == null)
                 return;
 
-            if (await HandleQuote(message))
+            if (server.AllowQuotes && await HandleQuote(message))
                 return;
 
             var res = await GetResponse(message.Content, message.Author.Discriminator);
