@@ -81,16 +81,23 @@ namespace FFBot2
             story.Rating = rating;
             story.Language = language;
             story.NumFollows = getInt(followsRegex);
-            story.Published = DateTime.Parse(publishedRegex.Match(statusLine).Groups[1].Value, CultureInfo.GetCultureInfo("en-US"));
+            story.Published = ParseFFNDate(publishedRegex.Match(statusLine).Groups[1].Value);
             story.Network = FicNetwork.FFN;
             story.Url = "https://www.fanfiction.net/s/" + story.ID + "/1/";
 
             story.Updated = null;
             if (updatedRegex.IsMatch(statusLine))
-                story.Updated = DateTime.Parse(updatedRegex.Match(statusLine).Groups[1].Value, CultureInfo.GetCultureInfo("en-US"));
+                story.Updated = ParseFFNDate(updatedRegex.Match(statusLine).Groups[1].Value);
 
             return new Tuple<Story, Author>(story, author);
         }
-    }
 
+        static DateTime ParseFFNDate(string text)
+        {
+            if(DateTime.TryParse(text, CultureInfo.GetCultureInfo("en-US"), DateTimeStyles.None, out var dt))
+                return dt;
+
+            return DateTime.Now;
+        }
+    }
 }
