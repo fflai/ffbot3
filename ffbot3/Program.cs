@@ -248,13 +248,6 @@ namespace FFBot2
                 if (forUser != null)
                     numRecs = RecCounter.Recommend(story, forUser);
 
-                string titleLine = "";
-
-                titleLine += " **_" + Clean(story.Title) + "_**" + " by " + "**" + Clean(story.Author.PenName) + "**";
-                titleLine += " (";
-                titleLine += numWords + " Words in ";
-                titleLine += story.NumChapters + " Chapters) ";
-
                 var desc = story.Description;
 
                 List<string> descriptionLines = new List<string>();
@@ -301,7 +294,7 @@ namespace FFBot2
 
                 builder.AddInlineField(book + " Last Updated", updateString);
 
-                builder.AddInlineField(":book: Length", $"{story.NumWords} words in {story.NumChapters} chapters");
+                builder.AddInlineField(":book: Length", $"{FormatBigNumber(story.NumWords)} words in {story.NumChapters} chapters");
 
                 return builder.Build();
             }
@@ -348,6 +341,27 @@ namespace FFBot2
                 .Replace("*", "\\*")
                 .Replace("_", "\\_")
                 ;
+        }
+
+        private static string FormatBigNumber(int bigNumber)
+        {
+            string res = "";
+
+            while (bigNumber > 0)
+            {
+                if (bigNumber < 1000)
+                {
+                    res = bigNumber + res;
+                    break;
+                }
+
+                var segment = "'" + (bigNumber % 1000).ToString().PadLeft(3, '0');
+                res = segment + res;
+
+                bigNumber /= 1000;
+            }
+
+            return res;
         }
     }
 }
