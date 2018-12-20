@@ -297,7 +297,9 @@ namespace FFBot2
                 else
                     book = ":closed_book:";
 
-                builder.AddInlineField(book + " Last Updated", AgoString(updated));
+                var updateString = AgoString(updated) + (story.IsComplete ? " - Complete!" : "");
+
+                builder.AddInlineField(book + " Last Updated", updateString);
 
                 builder.AddInlineField(":book: Length", $"{story.NumWords} words in {story.NumChapters} chapters");
 
