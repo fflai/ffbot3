@@ -143,9 +143,11 @@ namespace FFBot2
                     File.Create(fileName).Close();
 
                 var read = File.ReadAllLines("quotes/" + server + ".txt");
-                var newList = new List<string>(read.Where(a => !string.IsNullOrWhiteSpace(a)));
 
-                return QuoteCache[server] = newList;
+                var quoteList = read.Where(a => !string.IsNullOrWhiteSpace(a));
+                quoteList = read.Select(a => a.Replace("|||", "\n"));
+
+                return QuoteCache[server] = new List<string>(quoteList);
             }
         }
 
@@ -161,7 +163,7 @@ namespace FFBot2
                     if (!File.Exists(fileName))
                         File.Create(fileName).Close();
 
-                    File.WriteAllLines(fileName, res);
+                    File.WriteAllLines(fileName, res.Select(a => a.Replace("\r", "").Replace("\n", "|||")));
                 }
             }
         }
