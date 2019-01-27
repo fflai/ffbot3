@@ -135,6 +135,9 @@ namespace FFBot2
                             await Quotes.DisplayAddQuote(toAdd, msg.Channel);
                         }
                         break;
+                    case "dump":
+                        await Quotes.DumpQuotes(msg.Channel);
+                        break;
                 }
             }
             catch (Exception e)
