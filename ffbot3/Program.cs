@@ -150,11 +150,11 @@ namespace FFBot2
 
         private async static Task<Discord.Embed> GetResponse(string message, string user)
         {
-            var networkRegex = new Regex("`([^`]+)`|!l\\(([^)]+)\\)|link\\(([^)]+)\\)", RegexOptions.IgnoreCase);
-            var ffnRegex = new Regex("linkffn\\(([^)]+)\\)", RegexOptions.IgnoreCase);
-            var ao3Regex = new Regex("linkao3\\(([^)]+)\\)", RegexOptions.IgnoreCase);
+            var networkRegex = new Regex(@"`([^`]+)`|!l\(([^)]+)\)|link\(([^)]+)\)", RegexOptions.IgnoreCase);
+            var ffnRegex = new Regex(@"linkffn\(([^)]+)\)", RegexOptions.IgnoreCase);
+            var ao3Regex = new Regex(@"linkao3\(([^)]+)\)", RegexOptions.IgnoreCase);
 
-            var linkRegex = new Regex("https?:\\/\\/[^\\s]+", RegexOptions.IgnoreCase);
+            var linkRegex = new Regex(@"https?:\/\/[^\s]+", RegexOptions.IgnoreCase);
 
             // First, let's look at directly linked stories:
             var ficLink = FicLink.From(message);
