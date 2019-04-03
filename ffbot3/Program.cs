@@ -92,7 +92,16 @@ namespace FFBot2
             if (SentMessages.TryGetValue(message.Id, out var oldMessage))
             {
                 var res = await GetResponse(updatedMessage.Content, updatedMessage.Author.Discriminator);
-                await oldMessage.ModifyAsync((props) => props.Embed = res);
+
+                if (res != null)
+                {
+                    await oldMessage.ModifyAsync((props) => props.Embed = res);
+                }
+                else
+                {
+                    SentMessages.TryRemove(message.Id, out _);
+                    await oldMessage.DeleteAsync();
+                }
             }
             else
             {
