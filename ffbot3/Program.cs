@@ -167,7 +167,7 @@ namespace FFBot2
             if (message.Contains("!ig"))
                 return null;
 
-            var networkRegex = new Regex("`([^`]+)`|!l\\(([^)]+)\\)|link\\(([^)]+)\\)", RegexOptions.IgnoreCase);
+            var networkRegex = new Regex("`([^`]{7,})`|!l\\(([^)]{7,})\\)|link\\(([^)]{7,})\\)", RegexOptions.IgnoreCase);
             var ffnRegex = new Regex("linkffn\\(([^)]+)\\)", RegexOptions.IgnoreCase);
             var ao3Regex = new Regex("linkao3\\(([^)]+)\\)", RegexOptions.IgnoreCase);
             var linkRegex = new Regex("https?:\\/\\/[^\\s]+", RegexOptions.IgnoreCase);
