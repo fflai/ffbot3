@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Globalization;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -26,13 +29,19 @@ namespace FFBot2
         public static async Task<Story> CrawlStory(string id)
         {
             string url = MainClass.Config.FanFictionUrl + "s/" + id + "/1/";
-            string profileHtml;
-            using (var wc = new WebClient())
+            string profileHtml = null;
+
+            HttpClientHandler handler = new HttpClientHandler()
             {
-                wc.Encoding = Encoding.UTF8;
-                profileHtml = await wc.DownloadStringTaskAsync(url);
+                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+            };
+            using (var wc = new HttpClient(handler))
+            {
+                wc.DefaultRequestHeaders.Add("user-agent", "vlaaibot (contact: julianfanfic@gmail.com, vlaai on ao3 / ffn, or https://discord.gg/EZSVG7H0)");
+                profileHtml = await wc.GetStringAsync(url);
             }
 
+            // profileHtml = await wc.DownloadDataTaskAsync(url);
             var doc = new HtmlAgilityPack.HtmlDocument();
             doc.LoadHtml(profileHtml);
 
