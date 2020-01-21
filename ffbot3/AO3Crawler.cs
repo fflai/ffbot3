@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.IO;
 using System.Text;
+using System.Web;
 
 namespace FFBot2
 {
@@ -18,7 +19,21 @@ namespace FFBot2
             CookieContainer container = new CookieContainer();
 
             HttpWebRequest request = GetNewRequest(url, container);
-            HttpWebResponse response = (HttpWebResponse)(await request.GetResponseAsync());
+
+
+            HttpWebResponse response;
+
+            try
+            {
+                response = (HttpWebResponse)(await request.GetResponseAsync());
+            }
+            catch (WebException e)
+            {
+                var newLocation = e.Response.Headers[HttpResponseHeader.Location];
+                request = GetNewRequest(newLocation, container);
+                response = (HttpWebResponse)(await request.GetResponseAsync());
+            }
+
             while (response.StatusCode == HttpStatusCode.Found)
             {
                 response.Close();
@@ -68,7 +83,7 @@ namespace FFBot2
             story.Author = new Author
             {
                 ID = 0,
-                PenName = authorEle.InnerText,
+                PenName = HttpUtility.HtmlDecode(authorEle.InnerText),
                 Url = authorUrl,
             };
             story.Description = doc.DocumentNode
@@ -76,6 +91,9 @@ namespace FFBot2
                 .FirstOrDefault(a => a.ParentNode.Attributes["class"]?.Value == "summary module")?
                 .InnerText?
                 .Trim();
+
+            story.Description = HttpUtility.HtmlDecode(story.Description);
+
             story.Rating = NodeString(doc, "dd", "rating tags");
             story.NumWords = NodeInt(doc, "dd", "words");
             story.NumFavorites = NodeInt(doc, "dd", "kudos");
